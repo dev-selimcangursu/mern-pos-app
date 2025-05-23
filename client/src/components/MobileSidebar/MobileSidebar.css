@@ -41,16 +41,21 @@
   gap: 20px;
 }
 
-.nav__item {
+.mobile-sidebar__nav {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  color: #333;
-  text-decoration: none;
-  font-size: 16px;
-  transition: color 0.3s ease;
+  gap: 20px;
 }
 
-.nav__item:hover {
-  color: #1890ff;
+.nav__item {
+  margin-top: 10px;
+}
+
+.nav__item__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }

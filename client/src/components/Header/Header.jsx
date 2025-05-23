@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  SearchOutlined,
   HomeOutlined,
   ShoppingCartOutlined,
   CopyOutlined,
@@ -9,9 +8,12 @@ import {
   LogoutOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
-import { Input, Badge } from "antd";
-import "./Header.css";
-import MobileSidebar from "./MobileSidebar";
+import "../Header/Header.css";
+import MobileSidebar from "../MobileSidebar/MobileSidebar";
+import Logo from "../Header/Logo";
+import SearchBar from "./SearchBar";
+import NavItem from "./NavItem";
+import BadgeItem from "../BadgeItem";
 
 function Header() {
   const [mobileSidebarStatus, setMobileSidebarStatus] = useState(false);
@@ -19,7 +21,6 @@ function Header() {
   function toggleSidebar() {
     setMobileSidebarStatus(!mobileSidebarStatus);
   }
-
   return (
     <>
       {mobileSidebarStatus && (
@@ -28,50 +29,41 @@ function Header() {
           onClose={() => setMobileSidebarStatus(false)}
         />
       )}
-
       <header className="header">
         <div className="header__logo">
-          <img src="/logo.png" alt="Logo" />
+          <Logo id="headerLogo" />
         </div>
-
         <div className="header__search">
-          <Input
-            size="large"
-            placeholder="Hangi ürünü arıyorsunuz?"
-            prefix={<SearchOutlined />}
-            className="header__search-input"
-          />
+          <SearchBar />
         </div>
-
         <nav className="header__nav">
-          <a className="nav__item" href="#">
+          <NavItem>
             <HomeOutlined />
             <span>Anasayfa</span>
-          </a>
-          <Badge count={5}>
+          </NavItem>
+          <BadgeItem count="5">
             <a className="nav__item" href="#">
               <ShoppingCartOutlined />
               <span>Sepet</span>
             </a>
-          </Badge>
-          <a className="nav__item" href="#">
+          </BadgeItem>
+          <NavItem>
             <CopyOutlined />
             <span>Faturalar</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+          <NavItem>
             <UserOutlined />
             <span>Müşteriler</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+          <NavItem>
             <AreaChartOutlined />
             <span>Raporlar</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+          <NavItem>
             <LogoutOutlined />
             <span>Çıkış</span>
-          </a>
+          </NavItem>
         </nav>
-
         <UnorderedListOutlined
           onClick={toggleSidebar}
           id="mobile__sidebar__open__button"
@@ -80,5 +72,4 @@ function Header() {
     </>
   );
 }
-
 export default Header;

@@ -10,18 +10,12 @@
   justify-content: space-between;
   gap: 20px;
 }
-
-.header__logo img {
+.header__logo #headerLogo {
   height: 40px;
 }
-
 .header__search {
   flex: 1;
   margin: 0 20px;
-}
-
-.header__search-input {
-  width: 100%;
 }
 
 .header__nav {
@@ -30,23 +24,6 @@
   gap: 25px;
 }
 
-.nav__item {
-  color: #444;
-  text-decoration: none;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: color 0.3s ease;
-}
-
-.nav__item:hover {
-  color: #1890ff;
-}
-
-.nav__item span {
-  font-size: 12px;
-}
 #mobile__sidebar__open__button {
   display: none;
 }

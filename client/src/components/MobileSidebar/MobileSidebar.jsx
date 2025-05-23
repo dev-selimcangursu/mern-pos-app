@@ -9,7 +9,9 @@ import {
 } from "@ant-design/icons";
 import { Badge } from "antd";
 import "./MobileSidebar.css";
-
+import "../Header/NavItem";
+import NavItem from "../Header/NavItem";
+import BadgeItem from "../BadgeItem";
 function MobileSidebar({ isOpen, onClose }) {
   return (
     <>
@@ -19,32 +21,37 @@ function MobileSidebar({ isOpen, onClose }) {
       ></div>
       <div className={`mobile-sidebar ${isOpen ? "open" : ""}`}>
         <nav className="mobile-sidebar__nav">
-          <a className="nav__item" href="#">
+          <NavItem className="nav__item">
             <HomeOutlined />
             <span>Anasayfa</span>
-          </a>
-          <Badge count={5}>
-            <a className="nav__item" href="#">
+          </NavItem>
+
+          <BadgeItem className="nav__badge" count="5">
+            <a className="nav__item__link">
               <ShoppingCartOutlined />
               <span>Sepet</span>
             </a>
-          </Badge>
-          <a className="nav__item" href="#">
+          </BadgeItem>
+
+          <NavItem className="nav__item">
             <CopyOutlined />
             <span>Faturalar</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+
+          <NavItem>
             <UserOutlined />
             <span>Müşteriler</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+
+          <NavItem>
             <AreaChartOutlined />
             <span>Raporlar</span>
-          </a>
-          <a className="nav__item" href="#">
+          </NavItem>
+
+          <NavItem>
             <LogoutOutlined />
             <span>Çıkış</span>
-          </a>
+          </NavItem>
         </nav>
       </div>
     </>
