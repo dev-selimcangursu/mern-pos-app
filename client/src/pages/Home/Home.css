@@ -8,13 +8,19 @@
 
 .categories__wrapper {
   width: 15%;
-
 }
 .product__list__wrapper {
   width: 65%;
-
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
 }
+
 .basket__wrapper {
   width: 20%;
- 
 }
+
+

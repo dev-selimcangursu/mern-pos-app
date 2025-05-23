@@ -5,14 +5,12 @@
   padding: 0 30px;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: 70px;
+  height: 80px;
   box-sizing: border-box;
   justify-content: space-between;
   gap: 20px;
 }
-.header__logo #headerLogo {
-  height: 40px;
-}
+
 .header__search {
   flex: 1;
   margin: 0 20px;
