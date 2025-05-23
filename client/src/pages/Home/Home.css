@@ -1,0 +1,20 @@
+.home_main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.categories__wrapper {
+  width: 15%;
+
+}
+.product__list__wrapper {
+  width: 65%;
+
+}
+.basket__wrapper {
+  width: 20%;
+ 
+}
