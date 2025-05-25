@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const app = express();
 const PORT = 5255;
 const CategoryRoutes = require('./routes/CategoryRoutes')
+const ProductRoutes = require('./routes/ProductRoutes')
+const path = require('path');
+
 const cors = require('cors');
 app.use(cors({
   origin: 'http://localhost:5173'
@@ -10,6 +13,8 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/category',CategoryRoutes);
+app.use('/product',ProductRoutes);
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // MongoDB bağlantısı
 const uri = "mongodb://localhost:27017/wikywatch_pos_app";
