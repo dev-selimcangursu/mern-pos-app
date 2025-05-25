@@ -15,7 +15,7 @@ function router() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/sepet" element={<Basket />} />
+          <Route path="/listem" element={<Basket />} />
           <Route path="/faturalar" element={<Invoice />} />
           <Route path="/musteriler" element={<Customer />} />
           <Route path="/raporlar" element={<Report />} />

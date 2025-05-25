@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./NavItem.css";
 
-function NavItem({ children }) {
+function NavItem({ to, children }) {
   return (
-    <a className="nav__item" href="#">
+    <Link className="nav__item" to={to}>
       {children}
-    </a>
+    </Link>
   );
 }
 

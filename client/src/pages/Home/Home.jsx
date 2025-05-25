@@ -6,20 +6,23 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Basket from "../../components/Basket/Basket";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategories } from "../../features/category/categorySlice";
+import { fetchAllProduct } from "../../features/product/productSlice";
 
 function Home() {
   const dispatch = useDispatch();
+
   const categoryList = useSelector((state) => state.categories.categories);
   const queryProductList = useSelector((state) => state.product.queryProduct);
   const allProducts = useSelector((state) => state.product.allProducts);
 
-  console.log(categoryList);
-  console.log(queryProductList);
-  console.log(allProducts);
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchAllProduct());
   }, [dispatch]);
 
+  // Eğer queryProductList boşsa allProducts göster
+  const productListToRender = queryProductList.length > 0 ? queryProductList : allProducts;
+  console.log(allProducts)
   return (
     <>
       <Header />
@@ -29,7 +32,7 @@ function Home() {
             id="1"
             icon="https://cdn-icons-png.freepik.com/256/17883/17883534.png?ga=GA1.1.605070436.1748006589&semt=ais_hybrid"
             name="Tüm Ürünler"
-          ></CategoryCard>
+          />
           {Array.isArray(categoryList) &&
             categoryList.map((category) => (
               <CategoryCard
@@ -38,11 +41,12 @@ function Home() {
                 name={category.name}
                 slug={category.slug}
                 key={category._id}
-              ></CategoryCard>
+              />
             ))}
         </div>
+
         <div className="product__list__wrapper">
-          {queryProductList.map((product) => (
+          {productListToRender.map((product) => (
             <ProductCard
               id={product._id}
               key={product._id}
@@ -56,6 +60,7 @@ function Home() {
             />
           ))}
         </div>
+
         <div className="basket__wrapper">
           <Basket />
         </div>

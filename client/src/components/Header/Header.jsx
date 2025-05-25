@@ -3,8 +3,6 @@ import {
   HomeOutlined,
   ShoppingCartOutlined,
   UserOutlined,
-  AreaChartOutlined,
-  LogoutOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import "../Header/Header.css";
@@ -20,6 +18,7 @@ function Header() {
   function toggleSidebar() {
     setMobileSidebarStatus(!mobileSidebarStatus);
   }
+
   return (
     <>
       {mobileSidebarStatus && (
@@ -32,25 +31,30 @@ function Header() {
         <div className="header__logo">
           <Logo id="headerLogo" />
         </div>
+
         <div className="header__search">
           <SearchBar />
         </div>
+
         <nav className="header__nav">
-          <NavItem>
+          <NavItem to="/">
             <HomeOutlined />
             <span>Anasayfa</span>
           </NavItem>
+
           <BadgeItem count="5">
-            <a className="nav__item" href="#">
+            <NavItem to="/listem">
               <ShoppingCartOutlined />
               <span>Listem</span>
-            </a>
+            </NavItem>
           </BadgeItem>
-          <NavItem>
+
+          <NavItem to="https://www.wikywatch.com.tr">
             <UserOutlined />
             <span>Websitemiz</span>
           </NavItem>
         </nav>
+
         <UnorderedListOutlined
           onClick={toggleSidebar}
           id="mobile__sidebar__open__button"
@@ -59,4 +63,5 @@ function Header() {
     </>
   );
 }
+
 export default Header;
