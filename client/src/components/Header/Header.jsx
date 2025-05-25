@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   HomeOutlined,
   ShoppingCartOutlined,
-  CopyOutlined,
   UserOutlined,
   AreaChartOutlined,
   LogoutOutlined,
@@ -44,24 +43,12 @@ function Header() {
           <BadgeItem count="5">
             <a className="nav__item" href="#">
               <ShoppingCartOutlined />
-              <span>Sepet</span>
+              <span>Listem</span>
             </a>
           </BadgeItem>
           <NavItem>
-            <CopyOutlined />
-            <span>Faturalar</span>
-          </NavItem>
-          <NavItem>
             <UserOutlined />
-            <span>Müşteriler</span>
-          </NavItem>
-          <NavItem>
-            <AreaChartOutlined />
-            <span>Raporlar</span>
-          </NavItem>
-          <NavItem>
-            <LogoutOutlined />
-            <span>Çıkış</span>
+            <span>Websitemiz</span>
           </NavItem>
         </nav>
         <UnorderedListOutlined

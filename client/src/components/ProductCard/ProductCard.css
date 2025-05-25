@@ -1,40 +1,122 @@
 .product__card {
-  background-color: #fff;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 16px;
-  max-height: 400px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  box-sizing: border-box;
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s ease;
+  cursor: pointer;
 }
 
 .product__card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+.product__image {
+  width: 100%;
+  height: 220px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
 }
 
 .product__image img {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product__card:hover .product__image img {
+  transform: scale(1.05);
 }
 
 .product__info {
-  margin-top: 12px;
+  flex: 1;
 }
 
 .product__info h3 {
-  font-size: 1.1rem;
-  margin: 0 0 8px 0;
-  color: #333;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 12px;
+  line-height: 1.2;
 }
 
-.product__info p {
+.price__wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.price-original {
   font-size: 1rem;
+  font-weight: 500;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.price-discount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #e53935; /* Kırmızı ton, dikkat çeker */
+}
+
+.barcode {
+  display: block;
+  color: #777;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+
+.product__tags {
+  margin-bottom: 18px;
+}
+
+.description {
+  font-size: 13px;
   color: #444;
-  font-weight: bold;
+  min-height: 60px;
+  margin-bottom: 20px;
+}
+
+.product__actions {
+  margin-top: auto;
+}
+
+.ant-btn-primary {
+  background-color: #0070f3;
+  border-color: #0070f3;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 12px 0;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+  background-color: #005bb5;
+  border-color: #005bb5;
+}
+
+.ant-btn-primary:disabled,
+.ant-btn-primary[disabled] {
+  background-color: #ccc !important;
+  border-color: #ccc !important;
+  cursor: not-allowed;
+  color: #666 !important;
 }

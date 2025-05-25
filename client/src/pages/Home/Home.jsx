@@ -10,84 +10,51 @@ import { fetchCategories } from "../../features/category/categorySlice";
 function Home() {
   const dispatch = useDispatch();
   const categoryList = useSelector((state) => state.categories.categories);
+  const queryProductList = useSelector((state) => state.product.queryProduct);
+  const allProducts = useSelector((state) => state.product.allProducts);
 
+  console.log(categoryList);
+  console.log(queryProductList);
+  console.log(allProducts);
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("Category List:", categoryList);
-  }, [categoryList]);
   return (
     <>
       <Header />
       <div className="home_main">
         <div className="categories__wrapper">
-          <CategoryCard>
-            <img
-              style={{ width: 25, height: 25 }}
-              src="https://cdn-icons-png.freepik.com/256/17883/17883534.png?ga=GA1.1.605070436.1748006589&semt=ais_hybrid"
-              alt=""
-            />
-            <h4 style={{ marginTop: 10, fontSize: 16 }}>Tüm Ürünler</h4>
-          </CategoryCard>
+          <CategoryCard
+            id="1"
+            icon="https://cdn-icons-png.freepik.com/256/17883/17883534.png?ga=GA1.1.605070436.1748006589&semt=ais_hybrid"
+            name="Tüm Ürünler"
+          ></CategoryCard>
           {Array.isArray(categoryList) &&
-            categoryList.map((category, index) => (
-              <CategoryCard key={index}>
-                <img
-                  style={{ width: 25, height: 25 }}
-                  src={category.icon}
-                  alt={category.slug}
-                />
-                <h4 style={{ marginTop: 10, fontSize: 16 }}>{category.name}</h4>
-              </CategoryCard>
+            categoryList.map((category) => (
+              <CategoryCard
+                id={category._id}
+                icon={category.icon}
+                name={category.name}
+                slug={category.slug}
+                key={category._id}
+              ></CategoryCard>
             ))}
         </div>
         <div className="product__list__wrapper">
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 5 Plus"
-            price={2390}
-            stock={5}
-            barcodeNo={3579001234567890}
-          />
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 4"
-            price={1990}
-            stock={0}
-            barcodeNo={3579001234567890}
-          />
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 4"
-            price={1990}
-            stock={0}
-            barcodeNo={3579001234567890}
-          />
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 4"
-            price={1990}
-            stock={0}
-            barcodeNo={3579001234567890}
-          />
-
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 4"
-            price={1990}
-            stock={0}
-            barcodeNo={3579001234567890}
-          />
-
-          <ProductCard
-            image="https://cdn5.wikywatch.com.tr/uploads/2025/03/5s-pembe-1.jpg.webp"
-            name="Wiky Watch 4"
-            price={1990}
-            stock={0}
-            barcodeNo={3579001234567890}
-          />
+          {queryProductList.map((product) => (
+            <ProductCard
+              id={product._id}
+              key={product._id}
+              image={product.image_name}
+              name={product.name}
+              price={product.price}
+              discountPrice={product.discount_price}
+              description={product.short_description}
+              stock={product.stock}
+              barcodeNo={product.stk}
+            />
+          ))}
         </div>
         <div className="basket__wrapper">
           <Basket />
