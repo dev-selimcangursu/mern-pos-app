@@ -5,13 +5,14 @@ import { Card, Tag, Button } from "antd";
 import alertify from "alertifyjs";
 
 function Basket() {
+  // Karşılaştırma listesi state'i (localStorage'dan gelen ürünleri tutar)
   const [compareList, setCompareList] = useState([]);
-
+  // Sayfa yüklendiğinde karşılaştırma listesini localStorage'dan al
   useEffect(() => {
     const storedList = JSON.parse(localStorage.getItem("compareList")) || [];
     setCompareList(storedList);
   }, []);
-
+  // Karşılaştırma listesini temizleyen fonksiyon
   const clearCompareList = () => {
     alertify.confirm(
       "Onayla",
@@ -66,7 +67,7 @@ function Basket() {
                 cover={
                   <img
                     alt={product.slug}
-                    src={`http://localhost:5255/assets/products/${product.image_name}`}
+                    src={`http://localhost:5255/assets/products/${product.image}`}
                     className="compare__image"
                   />
                 }

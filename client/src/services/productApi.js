@@ -1,5 +1,5 @@
 import axios from "axios";
-
+// Tüm ürünleri çeken fonksiyon
 export const allProduct = async () => {
   try {
     const response = await axios.get("http://localhost:5255/product/fetch");
@@ -9,7 +9,7 @@ export const allProduct = async () => {
     throw error;
   }
 };
-
+// Belirli bir kategoriye ait ürünleri getiren fonksiyon
 export const getProduct = async (id) => {
   try {
     const response = await axios.get(`http://localhost:5255/product/get/${id}`);
@@ -19,7 +19,7 @@ export const getProduct = async (id) => {
     throw error;
   }
 };
-
+// Sepete eklenmek üzere belirli bir ürün grubunu getiren fonksiyon
 export const getProductToBasket = async (id) => {
   try {
     const response = await axios.get(
@@ -31,7 +31,7 @@ export const getProductToBasket = async (id) => {
     throw error;
   }
 };
-
+// Arama çubuğu için ürün arayan fonksiyon
 export const searchProduct = async (productName) => {
   try {
     const response = await axios.get(

@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Tag } from "antd";
 import "./ProductCard.css";
-import { fetchProductToBasket } from "../../features/basket/basketSlice";
-import { useDispatch } from "react-redux";
+import alertify from "alertifyjs";
 
 function ProductCard({
   id,
@@ -13,13 +12,66 @@ function ProductCard({
   barcodeNo,
   discountPrice,
   description,
+  website_url,
+  slug,
+  features = [],
 }) {
-  const dispatch = useDispatch();
+  // Ürünün karşılaştırma listesinde olup olmadığını kontrol eden state
+  const [isInCompareList, setIsInCompareList] = useState(false);
 
-  const handleAddToBasket = () => {
-    dispatch(fetchProductToBasket(id));
-  };
+  // Bileşen yüklendiğinde veya id değiştiğinde karşılaştırma listesini kontrol et
+  useEffect(() => {
+    const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+    // Ürün karşılaştırma listesinde var mı kontrolü
+    const isAlreadyInList = compareList.some((item) => {
+      const existingKey = item?.id ?? item?.slug;
+      return existingKey === id;
+    });
 
+    setIsInCompareList(isAlreadyInList);
+  }, [id]);
+  // Karşılaştırma listesine ürün ekleme fonksiyonu
+  function handleAddToCompare() {
+    const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+    // Eğer ürün zaten listede varsa uyarı ver
+    const isAlreadyInList = compareList.some((item) => {
+      const existingKey = item?.id ?? item?.slug;
+      return existingKey === id;
+    });
+
+    if (!isAlreadyInList) {
+      const productData = {
+        id,
+        name,
+        image,
+        price,
+        discountPrice,
+        barcodeNo,
+        description,
+        stock,
+        website_url,
+        slug,
+        features,
+      };
+      // Ürünü listeye ekle ve localStorage'a kaydet
+      compareList.push(productData);
+      localStorage.setItem("compareList", JSON.stringify(compareList));
+      alertify.success("Ürün karşılaştırma listesine eklendi.");
+      // State güncelle
+      setIsInCompareList(true);
+      window.dispatchEvent(new Event("compareListUpdated"));
+    } else {
+      alertify.warning("Bu ürün zaten karşılaştırma listesinde.");
+      setIsInCompareList(true);
+    }
+  }
+  // Ürün web sitesine yönlendirme fonksiyonu
+  function openWebsiteLink() {
+    if (website_url) {
+      window.open(website_url, "_blank");
+    }
+  }
+  // Stok bilgisini gösteren etiket
   const stockTag =
     stock > 0 ? (
       <Tag color="success" style={{ fontWeight: "600", borderRadius: 6 }}>
@@ -65,12 +117,26 @@ function ProductCard({
 
       <div className="product__actions">
         <Button
-          onClick={handleAddToBasket}
+          block
+          style={{
+            marginTop: "20px",
+            backgroundColor: isInCompareList ? "#ccc" : "#555",
+            borderColor: isInCompareList ? "#ccc" : "#555",
+            color: isInCompareList ? "#333" : "white",
+          }}
+          onClick={handleAddToCompare}
+          disabled={isInCompareList}
+        >
+          {isInCompareList ? "Listeye Eklendi" : "Karşılaştırma Listesine Ekle"}
+        </Button>
+
+        <Button
+          onClick={openWebsiteLink}
           type="primary"
           block
-          disabled={stock <= 0}
+          style={{ marginTop: "12px" }}
         >
-          Ürünü İncele
+          Hızlı Sipariş Ver
         </Button>
       </div>
     </div>

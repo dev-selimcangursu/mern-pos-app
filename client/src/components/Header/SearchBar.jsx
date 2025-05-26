@@ -7,9 +7,10 @@ import { useDispatch } from "react-redux";
 
 function SearchBar() {
   const dispatch = useDispatch();
-
+  // Arama çubuğunda input değiştiğinde tetiklenen fonksiyon
   const getSearchProduct = (e) => {
     const searchValue = e.target.value;
+    // Arama metnini Redux'a gönder, boş ise tüm ürünler için boş string gönder
     dispatch(fetchSearchProduct(searchValue || ""));
   };
 

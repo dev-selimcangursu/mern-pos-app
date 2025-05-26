@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// Tüm kategorileri API'den getiren fonksiyon
 export const fetchAllCategory = async () => {
   try {
     const response = await axios.get("http://localhost:5255/category/fetch");
@@ -9,7 +10,7 @@ export const fetchAllCategory = async () => {
     throw error;
   }
 };
-
+// Belirli bir kategoriye ait ürünleri getiren fonksiyon
 export const getProduct = async (id) => {
   try {
     const response = await axios.get(`http://localhost:5255/product/get/product/${id}`);

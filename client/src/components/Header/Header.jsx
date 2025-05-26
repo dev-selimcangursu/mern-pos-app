@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import {
   HomeOutlined,
-  ShoppingCartOutlined,
   UserOutlined,
   UnorderedListOutlined,
   SwapOutlined,
@@ -15,33 +13,33 @@ import NavItem from "./NavItem";
 import BadgeItem from "../BadgeItem";
 
 function Header() {
+  // Mobil sidebar'ın açık mı kapalı mı olduğunu tutan state
   const [mobileSidebarStatus, setMobileSidebarStatus] = useState(false);
-
-  const basketCount = useSelector((state) => state.basket.basket.length);
-
+  // Karşılaştırma listesinde kaç ürün olduğunu tutan state
   const [compareCount, setCompareCount] = useState(0);
 
-  // 🔁 LocalStorage compareList'i dinle
+  // Karşılaştırma listesindeki ürün sayısını takip etmek için useEffect kullanımı
   useEffect(() => {
+    // compareList değiştiğinde çağrılacak fonksiyon
     function updateCompareCount() {
+      // LocalStorage'dan karşılaştırma listesini al, yoksa boş liste olarak ayarla
       const list = JSON.parse(localStorage.getItem("compareList")) || [];
+      // Ürün sayısını state'e set et
       setCompareCount(list.length);
     }
-
+    // Component mount olduğunda karşılaştırma sayısını hemen güncelle
     updateCompareCount();
-
-    // Custom event listener
+    // compareList güncellendiğinde tetiklenen özel event dinleyicisi ekle
     window.addEventListener("compareListUpdated", updateCompareCount);
-
-    // Opsiyonel: storage event (başka tabdan güncelleme için)
+    // Başka sekmelerde localStorage güncellendiğinde de tetiklenen event dinleyicisi ekle
     window.addEventListener("storage", updateCompareCount);
-
+    // Cleanup: component unmount olduğunda event listenerları kaldır
     return () => {
       window.removeEventListener("compareListUpdated", updateCompareCount);
       window.removeEventListener("storage", updateCompareCount);
     };
   }, []);
-
+  // Mobil sidebar durumunu aç/kapa yapan fonksiyon
   function toggleSidebar() {
     setMobileSidebarStatus(!mobileSidebarStatus);
   }

@@ -11,7 +11,9 @@ function CategoryCard({ name, icon, slug, id }) {
 
   const handleClick = () => {
     if (id) {
+      // Eğer kategori id varsa, ilgili ürünleri getir
       dispatch(fetchQueryProduct(id));
+      // Daha önce yapılmış arama sonuçlarını temizle
       dispatch(clearSearchProduct());
     } else {
       console.error("Kategori ID eksik!");
