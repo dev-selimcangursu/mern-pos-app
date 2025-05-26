@@ -25,7 +25,7 @@ export const getProductToBasket = async (id) => {
     const response = await axios.get(`http://localhost:5255/product/get/section/${id}`)
     return response.data
   } catch (error) {
-    console.error("Ürün Setepe Eklenemedi:", error);
+    console.error("Ürün Sepete Eklenemedi:", error);
     throw error;
   }
 };

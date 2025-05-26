@@ -1,6 +1,6 @@
 import React from "react";
 import "./Basket.css";
-import { Tag, Button } from "antd";
+import { Tag, Button ,message} from "antd";
 import { useSelector } from "react-redux";
 
 function Basket() {
@@ -9,9 +9,34 @@ function Basket() {
   if (!basketProduct) {
     return <div className="summary__container">Sepet boş.</div>;
   }
+
   function openWebsiteLink() {
     window.open(basketProduct.website_url, "_blank");
   }
+
+function handleAddToCompare() {
+  const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+  const newProductKey = basketProduct?.id ?? basketProduct?.slug;
+
+  const isAlreadyInList = compareList.some((item) => {
+    const existingKey = item?.id ?? item?.slug;
+    return existingKey === newProductKey;
+  });
+
+  console.log("Compare List:", compareList);
+  console.log("Yeni Ürün:", basketProduct);
+
+  if (!isAlreadyInList) {
+    compareList.push(basketProduct);
+    localStorage.setItem("compareList", JSON.stringify(compareList));
+    message.success("Ürün karşılaştırma listesine eklendi.");
+  } else {
+    message.warning("Bu ürün zaten karşılaştırma listesinde.");
+  }
+}
+
+console.log("Sepetteki Ürün:", basketProduct);
+
   return (
     <div className="summary__container">
       <h3>Ürün Özeti</h3>
@@ -63,6 +88,7 @@ function Basket() {
           borderColor: "#555",
           color: "white",
         }}
+        onClick={handleAddToCompare}
         disabled={!basketProduct || !basketProduct.name}
       >
         Karşılaştırma Listesine Ekle

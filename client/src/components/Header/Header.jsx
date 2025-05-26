@@ -41,7 +41,7 @@ function Header() {
             <HomeOutlined />
             <span>Anasayfa</span>
           </NavItem>
-
+       
           <BadgeItem count="5">
             <NavItem to="/listem">
               <ShoppingCartOutlined />
