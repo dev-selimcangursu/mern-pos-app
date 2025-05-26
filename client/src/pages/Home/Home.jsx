@@ -54,6 +54,7 @@ function Home() {
             <ProductCard
               id={product._id}
               key={product._id}
+              category_id={product.category_id}
               image={product.image_name}
               name={product.name}
               price={product.price}

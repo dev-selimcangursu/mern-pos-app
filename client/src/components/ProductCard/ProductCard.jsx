@@ -15,6 +15,7 @@ function ProductCard({
   website_url,
   slug,
   features = [],
+  category_id,
 }) {
   // Ürünün karşılaştırma listesinde olup olmadığını kontrol eden state
   const [isInCompareList, setIsInCompareList] = useState(false);
@@ -22,7 +23,6 @@ function ProductCard({
   // Bileşen yüklendiğinde veya id değiştiğinde karşılaştırma listesini kontrol et
   useEffect(() => {
     const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
-    // Ürün karşılaştırma listesinde var mı kontrolü
     const isAlreadyInList = compareList.some((item) => {
       const existingKey = item?.id ?? item?.slug;
       return existingKey === id;
@@ -33,11 +33,19 @@ function ProductCard({
   // Karşılaştırma listesine ürün ekleme fonksiyonu
   function handleAddToCompare() {
     const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
-    // Eğer ürün zaten listede varsa uyarı ver
+
     const isAlreadyInList = compareList.some((item) => {
       const existingKey = item?.id ?? item?.slug;
       return existingKey === id;
     });
+
+    // Eğer liste boş değilse ve ilk ürünün category_id'si ile bu ürününki farklıysa
+    if (compareList.length > 0 && compareList[0]?.category_id !== category_id) {
+      alertify.error(
+        "Sadece aynı kategoriden ürünleri karşılaştırabilirsiniz."
+      );
+      return;
+    }
 
     if (!isAlreadyInList) {
       const productData = {
@@ -52,12 +60,12 @@ function ProductCard({
         website_url,
         slug,
         features,
+        category_id,
       };
-      // Ürünü listeye ekle ve localStorage'a kaydet
+
       compareList.push(productData);
       localStorage.setItem("compareList", JSON.stringify(compareList));
       alertify.success("Ürün karşılaştırma listesine eklendi.");
-      // State güncelle
       setIsInCompareList(true);
       window.dispatchEvent(new Event("compareListUpdated"));
     } else {
@@ -103,7 +111,7 @@ function ProductCard({
           )}
         </div>
 
-        <small className="barcode">Barkod: {barcodeNo}</small>
+        <small className="barcode">GTIN: {barcodeNo}</small>
 
         <div className="product__tags">
           {stockTag}
