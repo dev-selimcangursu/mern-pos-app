@@ -6,6 +6,7 @@ router.get('/store',ProductController.store)
 router.get('/get/:categoryId',ProductController.getProduct)
 router.get('/fetch',ProductController.allProduct)
 router.get('/get/section/:productId',ProductController.getProductById)
+router.get('/add/features',ProductController.addProductFeature)
 
 
 module.exports = router
