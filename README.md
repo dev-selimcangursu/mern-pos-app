@@ -38,9 +38,9 @@ Bu proje, **Wiky Watch** akıllı çocuk saatleri firmasına ait ürün, aksesua
 - Her ürün kartında bulunan "Hızlı Sipariş Ver" butonu, kullanıcıyı doğrudan ürünün **satın alma linkine** yönlendirir.
 
 ### ⚡ Proje Görselleri
-![Image-1]('./screenshot/image-1.png)
-![Image-2]('./screenshot/image-2.png)
-![Image-3]('./screenshot/image-3.png)
-![Image-4]('./screenshot/image-4.png)
-![Image-5]('./screenshot/image-5.png)
-![Image-6]('./screenshot/image-6.png)
+![Image-1](./screenshot/image-1.png)
+![Image-2](./screenshot/image-2.png)
+![Image-3](./screenshot/image-3.png)
+![Image-4](./screenshot/image-4.png)
+![Image-5](./screenshot/image-5.png)
+![Image-6](./screenshot/image-6.png)
