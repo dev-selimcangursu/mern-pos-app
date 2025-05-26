@@ -209,10 +209,32 @@ const getProductById = async (req, res) => {
   }
 };
 
+const searchProduct = async (req, res) => {
+  try {
+    const { productName } = req.params;
+
+    const products = await Product.find({
+      name: { $regex: productName, $options: "i" },
+    });
+
+    if (products.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Ürün bulunamadı" });
+    }
+
+    return res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.error("Ürün arama hatası:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   store,
   getProduct,
   allProduct,
   getProductById,
   addProductFeature,
+  searchProduct,
 };
