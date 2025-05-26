@@ -22,10 +22,24 @@ export const getProduct = async (id) => {
 
 export const getProductToBasket = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:5255/product/get/section/${id}`)
-    return response.data
+    const response = await axios.get(
+      `http://localhost:5255/product/get/section/${id}`
+    );
+    return response.data;
   } catch (error) {
     console.error("Ürün Sepete Eklenemedi:", error);
+    throw error;
+  }
+};
+
+export const searchProduct = async (productName) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5255/product/search/${productName}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ürün Arama Hatası:", error);
     throw error;
   }
 };

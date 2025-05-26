@@ -1,7 +1,10 @@
 import React from "react";
 import "./CategoryCard.css";
 import { useDispatch } from "react-redux";
-import { fetchQueryProduct } from "../../features/product/productSlice";
+import {
+  fetchQueryProduct,
+  clearSearchProduct,
+} from "../../features/product/productSlice";
 
 function CategoryCard({ name, icon, slug, id }) {
   const dispatch = useDispatch();
@@ -9,6 +12,7 @@ function CategoryCard({ name, icon, slug, id }) {
   const handleClick = () => {
     if (id) {
       dispatch(fetchQueryProduct(id));
+      dispatch(clearSearchProduct());
     } else {
       console.error("Kategori ID eksik!");
     }

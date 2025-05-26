@@ -92,7 +92,7 @@ function Basket() {
 
                 <table className="compare__features-table">
                   <tbody>
-                    {product.features.map(({ key, name, value }) => (
+                    {(product.features || []).map(({ key, name, value }) => (
                       <tr key={key}>
                         <td>{name}</td>
                         <td className="feature-status">

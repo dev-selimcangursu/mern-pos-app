@@ -6,7 +6,10 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import Basket from "../../components/Basket/Basket";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategories } from "../../features/category/categorySlice";
-import { fetchAllProduct } from "../../features/product/productSlice";
+import {
+  fetchAllProduct,
+  fetchSearchProduct,
+} from "../../features/product/productSlice";
 
 function Home() {
   const dispatch = useDispatch();
@@ -14,25 +17,27 @@ function Home() {
   const categoryList = useSelector((state) => state.categories.categories);
   const queryProductList = useSelector((state) => state.product.queryProduct);
   const allProducts = useSelector((state) => state.product.allProducts);
-
+  const searchProductList = useSelector((state) => state.product.searchProduct);
+  console.log("Arama Sonuçları:", searchProductList);
   useEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchAllProduct());
+    dispatch(fetchSearchProduct(""));
   }, [dispatch]);
 
-  // Eğer queryProductList boşsa allProducts göster
-  const productListToRender =
-    queryProductList.length > 0 ? queryProductList : allProducts;
+  let productListToRender = allProducts;
+
+  if (searchProductList && searchProductList.length > 0) {
+    productListToRender = searchProductList;
+  } else if (queryProductList && queryProductList.length > 0) {
+    productListToRender = queryProductList;
+  }
+
   return (
     <>
       <Header />
       <div className="home_main">
         <div className="categories__wrapper">
-          <CategoryCard
-            id="1"
-            icon="https://cdn-icons-png.freepik.com/256/17883/17883534.png?ga=GA1.1.605070436.1748006589&semt=ais_hybrid"
-            name="Tüm Ürünler"
-          />
           {Array.isArray(categoryList) &&
             categoryList.map((category) => (
               <CategoryCard
