@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import "./Basket.css";
 import { Card, Tag, Button } from "antd";
+import alertify from "alertifyjs";
 
 function Basket() {
   const [compareList, setCompareList] = useState([]);
@@ -12,27 +13,45 @@ function Basket() {
   }, []);
 
   const clearCompareList = () => {
-    localStorage.removeItem("compareList");
-    setCompareList([]);
+    alertify.confirm(
+      "Onayla",
+      "Karşılaştırma listesini temizlemek istediğinize emin misiniz?",
+      function () {
+        localStorage.removeItem("compareList");
+        setCompareList([]);
+        alertify.success("Karşılaştırma listesi temizlendi.");
+      },
+      function () {
+        alertify.error("İşlem iptal edildi.");
+      }
+    );
   };
 
   return (
     <>
       <Header />
       <div className="compare__container">
-        <h2>Karşılaştırma Listesi</h2>
-
-        {/* 🆕 Temizle butonu */}
-        {compareList.length > 0 && (
-          <Button
-            type="primary"
-            primary
-            onClick={clearCompareList}
-            style={{ fontSize: "12px" }}
-          >
-            Listeyi Temizle
-          </Button>
-        )}
+        <div className="compare__header">
+          <h2>Karşılaştırma Listesi</h2>
+          {compareList.length > 0 && (
+            <Button
+              type="primary"
+              onClick={clearCompareList}
+              style={{
+                fontSize: "13px",
+                padding: "6px 14px",
+                borderRadius: "6px",
+                fontWeight: "500",
+                backgroundColor: "#1677ff",
+                border: "none",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                transition: "all 0.3s ease",
+              }}
+            >
+              Listeyi Temizle
+            </Button>
+          )}
+        </div>
 
         {compareList.length === 0 ? (
           <p className="empty-message">Karşılaştırma listesi boş.</p>
@@ -66,12 +85,9 @@ function Basket() {
 
                 <p className="compare__desc">{product.short_description}</p>
 
-                <p
-                  className={`compare__stock ${
-                    product.stk > 0 ? "in-stock" : "out-of-stock"
-                  }`}
-                >
-                  {product.stk > 0 ? `Stok: ${product.stk}` : "Stokta yok"}
+                <p className="compare__stock">
+                  <strong>Stok : {product.stock} Adet</strong>
+                  <strong>STK : {product.stock} Adet</strong>
                 </p>
 
                 <table className="compare__features-table">
@@ -102,6 +118,17 @@ function Basket() {
                       {tag}
                     </Tag>
                   ))}
+                </div>
+                <div>
+                  <Button
+                    type="primary"
+                    style={{ width: "100%" }}
+                    onClick={() => {
+                      window.location.href = `${product.website_url}`;
+                    }}
+                  >
+                    Hızlı Sipariş Ver
+                  </Button>
                 </div>
               </Card>
             ))}

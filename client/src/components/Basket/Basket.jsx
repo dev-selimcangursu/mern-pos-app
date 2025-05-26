@@ -1,47 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Basket.css";
-import { Tag, Button ,message} from "antd";
+import { Tag, Button } from "antd";
 import { useSelector } from "react-redux";
-
+import alertify from "alertifyjs";
 function Basket() {
   const basketProduct = useSelector((state) => state.basket.basket);
+  const [isInCompareList, setIsInCompareList] = useState(false);
 
-  if (!basketProduct) {
-    return <div className="summary__container">Sepet boş.</div>;
-  }
+  useEffect(() => {
+    const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+    const newProductKey = basketProduct?.id ?? basketProduct?.slug;
+
+    const isAlreadyInList = compareList.some((item) => {
+      const existingKey = item?.id ?? item?.slug;
+      return existingKey === newProductKey;
+    });
+
+    setIsInCompareList(isAlreadyInList);
+  }, [basketProduct]);
 
   function openWebsiteLink() {
     window.open(basketProduct.website_url, "_blank");
   }
 
-function handleAddToCompare() {
-  const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
-  const newProductKey = basketProduct?.id ?? basketProduct?.slug;
+  function handleAddToCompare() {
+    const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+    const newProductKey = basketProduct?.id ?? basketProduct?.slug;
 
-  const isAlreadyInList = compareList.some((item) => {
-    const existingKey = item?.id ?? item?.slug;
-    return existingKey === newProductKey;
-  });
+    const isAlreadyInList = compareList.some((item) => {
+      const existingKey = item?.id ?? item?.slug;
+      return existingKey === newProductKey;
+    });
 
-  console.log("Compare List:", compareList);
-  console.log("Yeni Ürün:", basketProduct);
-
-  if (!isAlreadyInList) {
-    compareList.push(basketProduct);
-    localStorage.setItem("compareList", JSON.stringify(compareList));
-    message.success("Ürün karşılaştırma listesine eklendi.");
-  } else {
-    message.warning("Bu ürün zaten karşılaştırma listesinde.");
+    if (!isAlreadyInList) {
+      compareList.push(basketProduct);
+      localStorage.setItem("compareList", JSON.stringify(compareList));
+      alertify.success("Ürün karşılaştırma listesine eklendi.");
+      setIsInCompareList(true);
+      window.dispatchEvent(new Event("compareListUpdated"));
+    } else {
+      alertify.warning("Bu ürün zaten karşılaştırma listesinde.");
+      setIsInCompareList(true);
+    }
   }
-}
 
-console.log("Sepetteki Ürün:", basketProduct);
+  if (!basketProduct) {
+    return <div className="summary__container">Sepet boş.</div>;
+  }
 
   return (
     <div className="summary__container">
       <h3>Ürün Özeti</h3>
       <div className="summary__content">
-        {!basketProduct || !basketProduct.name ? (
+        {!basketProduct?.name ? (
           <p>Seçili Ürün Yok</p>
         ) : (
           <>
@@ -79,19 +90,18 @@ console.log("Sepetteki Ürün:", basketProduct);
           </>
         )}
       </div>
-
       <Button
         block
         style={{
           marginTop: "20px",
-          backgroundColor: "#555",
-          borderColor: "#555",
-          color: "white",
+          backgroundColor: isInCompareList ? "#ccc" : "#555",
+          borderColor: isInCompareList ? "#ccc" : "#555",
+          color: isInCompareList ? "#333" : "white",
         }}
         onClick={handleAddToCompare}
-        disabled={!basketProduct || !basketProduct.name}
+        disabled={!basketProduct?.name || isInCompareList}
       >
-        Karşılaştırma Listesine Ekle
+        {isInCompareList ? "Listeye Eklendi" : "Karşılaştırma Listesine Ekle"}
       </Button>
 
       <Button
@@ -99,7 +109,7 @@ console.log("Sepetteki Ürün:", basketProduct);
         type="primary"
         block
         style={{ marginTop: "12px" }}
-        disabled={!basketProduct || !basketProduct.name}
+        disabled={!basketProduct?.name}
       >
         Hızlı Sipariş Ver
       </Button>

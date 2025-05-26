@@ -1,0 +1,12 @@
+.alertify .ajs-message {
+  color: white !important;
+}
+.alertify .ajs-message.ajs-success {
+  background: #444 !important;
+}
+.alertify .ajs-message.ajs-warning {
+  background: #a87b00 !important;
+}
+.alertify .ajs-message.ajs-error {
+  background: #aa0000 !important;
+}

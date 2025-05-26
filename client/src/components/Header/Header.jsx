@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   HomeOutlined,
   ShoppingCartOutlined,
   UserOutlined,
   UnorderedListOutlined,
+  SwapOutlined,
 } from "@ant-design/icons";
 import "../Header/Header.css";
 import MobileSidebar from "../MobileSidebar/MobileSidebar";
@@ -14,6 +16,31 @@ import BadgeItem from "../BadgeItem";
 
 function Header() {
   const [mobileSidebarStatus, setMobileSidebarStatus] = useState(false);
+
+  const basketCount = useSelector((state) => state.basket.basket.length);
+
+  const [compareCount, setCompareCount] = useState(0);
+
+  // 🔁 LocalStorage compareList'i dinle
+  useEffect(() => {
+    function updateCompareCount() {
+      const list = JSON.parse(localStorage.getItem("compareList")) || [];
+      setCompareCount(list.length);
+    }
+
+    updateCompareCount();
+
+    // Custom event listener
+    window.addEventListener("compareListUpdated", updateCompareCount);
+
+    // Opsiyonel: storage event (başka tabdan güncelleme için)
+    window.addEventListener("storage", updateCompareCount);
+
+    return () => {
+      window.removeEventListener("compareListUpdated", updateCompareCount);
+      window.removeEventListener("storage", updateCompareCount);
+    };
+  }, []);
 
   function toggleSidebar() {
     setMobileSidebarStatus(!mobileSidebarStatus);
@@ -41,11 +68,10 @@ function Header() {
             <HomeOutlined />
             <span>Anasayfa</span>
           </NavItem>
-       
-          <BadgeItem count="5">
+          <BadgeItem count={compareCount}>
             <NavItem to="/listem">
-              <ShoppingCartOutlined />
-              <span>Listem</span>
+              <SwapOutlined />
+              <span>Karşılaştır</span>
             </NavItem>
           </BadgeItem>
 

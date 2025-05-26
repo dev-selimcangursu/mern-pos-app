@@ -21,8 +21,8 @@ function Home() {
   }, [dispatch]);
 
   // Eğer queryProductList boşsa allProducts göster
-  const productListToRender = queryProductList.length > 0 ? queryProductList : allProducts;
-  console.log(allProducts)
+  const productListToRender =
+    queryProductList.length > 0 ? queryProductList : allProducts;
   return (
     <>
       <Header />
