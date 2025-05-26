@@ -2,6 +2,7 @@ const Product = require("../models/Product");
 const mongoose = require("mongoose");
 const ProductFeature = require("../models/productFeature");
 
+// Ürüne özellik ekleme fonksiyonu
 const addProductFeature = async (req, res) => {
   try {
     const newData = await ProductFeature.create({
@@ -117,36 +118,7 @@ const addProductFeature = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-const store = async (req, res) => {
-  try {
-    const newProduct = new Product({
-      name: "Wiky Watch 4S Siyah Akıllı Çocuk Saati",
-      slug: "wiky-watch-4s",
-      category_id: "68317795b713c69c6b824e5b",
-      short_description:
-        "Wiky Watch 4S Akıllı Çocuk Saati , ebeveyn ve çocukları güvenle birbirine bağlar.4.5G Görüntülü görüşme ve rehberden arama özelliğyle çocuğunuza güvenle bağlanın",
-      price: "5790",
-      discount_price: "5490",
-      stock: "100",
-      stk: "28456325487",
-      image_name: "wiky-watch-4s-siyah.png",
-      is_active: true,
-      product_cost: "3000",
-    });
-    const productSave = await newProduct.save();
-
-    if (productSave) {
-      res.send("Ürün Başarıyla Eklendi");
-    } else {
-      res.send("Ürün Eklenemedi");
-    }
-  } catch (error) {
-    console.log(error);
-    return res.json({ success: false, message: error });
-  }
-};
-// Kategoriye Göre Ürünlerin Listelenmesi
+// Belirli bir kategoriye ait ürünleri getirme
 const getProduct = async (req, res) => {
   try {
     const { categoryId } = req.params;
@@ -156,27 +128,65 @@ const getProduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Geçersiz kategori ID" });
     }
+
     const queryProduct = await Product.find({
       category_id: new mongoose.Types.ObjectId(categoryId),
     });
 
-    return res.status(200).json({ success: true, data: queryProduct });
-  } catch (error) {
-    console.error("Ürünleri alırken hata:", error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-// Tüm Ürünler
-const allProduct = async (req, res) => {
-  try {
-    const data = await Product.find();
-    return res.status(200).json({ success: true, data: data });
+    if (queryProduct.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Bu kategoriye ait ürün bulunamadı" });
+    }
+
+    // Ürünlere aktif özellikleri ekle
+    const productsWithFeatures = await Promise.all(
+      queryProduct.map(async (product) => {
+        const features = await ProductFeature.findOne({
+          product_id: product._id,
+          is_active: true,
+        });
+
+        return {
+          ...product.toObject(),
+          features: features?.features || [],
+        };
+      })
+    );
+
+    return res.status(200).json({ success: true, data: productsWithFeatures });
   } catch (error) {
     console.error("Ürünleri alırken hata:", error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// Tüm ürünleri getir
+const allProduct = async (req, res) => {
+  try {
+    const products = await Product.find();
+
+    const productsWithFeatures = await Promise.all(
+      products.map(async (product) => {
+        const features = await ProductFeature.findOne({
+          product_id: product._id,
+          is_active: true,
+        });
+
+        return {
+          ...product.toObject(),
+          features: features?.features || [],
+        };
+      })
+    );
+
+    return res.status(200).json({ success: true, data: productsWithFeatures });
+  } catch (error) {
+    console.error("Ürünleri alırken hata:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Belirli bir ürün ID'sine göre ürün bilgisi getir
 const getProductById = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -208,7 +218,7 @@ const getProductById = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
+// Ürün adına göre arama yap
 const searchProduct = async (req, res) => {
   try {
     const { productName } = req.params;
@@ -223,7 +233,21 @@ const searchProduct = async (req, res) => {
         .json({ success: false, message: "Ürün bulunamadı" });
     }
 
-    return res.status(200).json({ success: true, data: products });
+    const productsWithFeatures = await Promise.all(
+      products.map(async (product) => {
+        const features = await ProductFeature.findOne({
+          product_id: product._id,
+          is_active: true,
+        });
+
+        return {
+          ...product.toObject(),
+          features: features?.features || [],
+        };
+      })
+    );
+
+    return res.status(200).json({ success: true, data: productsWithFeatures });
   } catch (error) {
     console.error("Ürün arama hatası:", error);
     return res.status(500).json({ success: false, message: error.message });
@@ -231,7 +255,6 @@ const searchProduct = async (req, res) => {
 };
 
 module.exports = {
-  store,
   getProduct,
   allProduct,
   getProductById,
